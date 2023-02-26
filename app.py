@@ -36,9 +36,10 @@ def report(x,y):
     Avg_spd = []
     Distance = []
     Tripcount = []
+    Harsh_Acc = []
+    Harsh_Break = []
     for j in range(len(st)):
         z = st[j]
-        col = ['tis', 'osf', 'lon', 'lat', 'spd']
         truck = pd.read_csv(f'EOL-dump/{z}.csv')
         truck['tis'] = pd.to_datetime(truck['tis'], unit='s')
         truck['tis'] = pd.to_datetime(truck['tis'], format='%Y%m%d%H%M%S')
@@ -57,6 +58,14 @@ def report(x,y):
             Speed_violation.append(truck['osf'].value_counts()[True])
         except:
             Speed_violation.append(0)
+        try:
+            Harsh_Acc.append(truck['harsh_acceleration'].value_counts()[True])
+        except:
+            Harsh_Acc.append(0)
+        try:
+            Harsh_Break.append(truck['harsh_acceleration'].value_counts()[True])
+        except:
+            Harsh_Break.append(0)
         Numberplate.append(z)
         m = list(trip.query(f"vehicle_number=='{z}'")["transporter_name"])
         Transport_name.append(m[0])
@@ -79,7 +88,9 @@ def report(x,y):
         'Number of Trips Completed': Tripcount,
         'Average Speed': Avg_spd,
         'Transporter Name': Transport_name,
-        'Number of Speed Violations': Speed_violation
+        'Number of Speed Violations': Speed_violation,
+        'Number of Harsh Accelaration':Harsh_Acc,
+        'Number of Harsh Breaking': Harsh_Break
     }
     df = pd.DataFrame(dict)
     df.to_excel("output.xlsx", sheet_name='Report')
@@ -122,6 +133,8 @@ def search():
     Avg_spd = []
     Distance = []
     Tripcount = []
+    Harsh_Acc = []
+    Harsh_Break = []
     for j in range(len(st)):
         z = st[j]
         col = ['tis', 'osf', 'lon', 'lat', 'spd']
@@ -143,6 +156,14 @@ def search():
             Speed_violation.append(truck['osf'].value_counts()[True])
         except:
             Speed_violation.append(0)
+        try:
+            Harsh_Acc.append(truck['harsh_acceleration'].value_counts()[True])
+        except:
+            Harsh_Acc.append(0)
+        try:
+            Harsh_Break.append(truck['harsh_acceleration'].value_counts()[True])
+        except:
+            Harsh_Break.append(0)
         Numberplate.append(z)
         m = list(trip.query(f"vehicle_number=='{z}'")["transporter_name"])
         Transport_name.append(m[0])
@@ -166,11 +187,13 @@ def search():
         'Number of Trips Completed': Tripcount,
         'Average Speed': Avg_spd,
         'Transporter Name': Transport_name,
-        'Number of Speed Violations': Speed_violation
+        'Number of Speed Violations': Speed_violation,
+        'Number of Harsh Accelaration': Harsh_Acc,
+        'Number of Harsh Breaking': Harsh_Break
     }
 
     df = pd.DataFrame(dict)
     df.to_excel("output.xlsx", sheet_name='Report')
-    return send_file('output.xlsx', attachment_filename='report.xlsx')
+    return send_file('output.xlsx', download_name='report.xlsx')
 
 
