@@ -63,7 +63,7 @@ def report(x,y):
         except:
             Harsh_Acc.append(0)
         try:
-            Harsh_Break.append(truck['harsh_acceleration'].value_counts()[True])
+            Harsh_Break.append(truck['hbk'].value_counts()[True])
         except:
             Harsh_Break.append(0)
         Numberplate.append(z)
